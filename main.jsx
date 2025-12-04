@@ -45,19 +45,18 @@ const RenderApp = () => {
   const [error, setError] = useState(null);
   const [status, setStatus] = useState("Waiting for input...");
   useEffect(() => {
-    const cleanupUI = () => {
-      const el = document.getElementById("websim-logo-container");
-      if (el) {
-        el.style.setProperty("display", "none", "important");
-        if (el.parentElement && el.parentElement.parentNode === document.body) {
-          el.parentElement.style.setProperty("display", "none", "important");
+    const cleanupInjectedUI = () => {
+      const root2 = document.getElementById("player-root");
+      if (!root2) return;
+      Array.from(document.body.children).forEach((child) => {
+        if (child.tagName === "DIV" && child !== root2) {
+          child.style.display = "none";
         }
-      }
+      });
     };
-    cleanupUI();
-    const observer = new MutationObserver(cleanupUI);
-    observer.observe(document.body, { childList: true, subtree: true });
-    return () => observer.disconnect();
+    cleanupInjectedUI();
+    const interval = setInterval(cleanupInjectedUI, 200);
+    return () => clearInterval(interval);
   }, []);
   const handleData = async (data) => {
     if (!data || !data.frames || data.frames.length === 0) {
