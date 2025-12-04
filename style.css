@@ -2,11 +2,6 @@
     --bg-color: #1a1a2e;
 }
 
-/* Hide the Websim logo container */
-#websim-logo-container {
-    display: none !important;
-}
-
 * {
     box-sizing: border-box;
 }

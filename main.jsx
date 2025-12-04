@@ -44,6 +44,21 @@ const RenderApp = () => {
   const [prefetchedAvatarUrl, setPrefetchedAvatarUrl] = useState(null);
   const [error, setError] = useState(null);
   const [status, setStatus] = useState("Waiting for input...");
+  useEffect(() => {
+    const cleanupUI = () => {
+      const el = document.getElementById("websim-logo-container");
+      if (el) {
+        el.style.setProperty("display", "none", "important");
+        if (el.parentElement && el.parentElement.parentNode === document.body) {
+          el.parentElement.style.setProperty("display", "none", "important");
+        }
+      }
+    };
+    cleanupUI();
+    const observer = new MutationObserver(cleanupUI);
+    observer.observe(document.body, { childList: true, subtree: true });
+    return () => observer.disconnect();
+  }, []);
   const handleData = async (data) => {
     if (!data || !data.frames || data.frames.length === 0) {
       setError("Invalid replay data");
@@ -101,14 +116,14 @@ const RenderApp = () => {
   if (error) {
     return /* @__PURE__ */ jsxDEV("div", { style: { color: "#e94560", textAlign: "center", fontFamily: "sans-serif" }, children: error }, void 0, false, {
       fileName: "<stdin>",
-      lineNumber: 127,
+      lineNumber: 145,
       columnNumber: 16
     });
   }
   if (!replayData) {
     return /* @__PURE__ */ jsxDEV("div", { style: { color: "#dcdcdc", textAlign: "center", fontFamily: "sans-serif" }, children: status }, void 0, false, {
       fileName: "<stdin>",
-      lineNumber: 131,
+      lineNumber: 149,
       columnNumber: 16
     });
   }
@@ -133,13 +148,13 @@ const RenderApp = () => {
     false,
     {
       fileName: "<stdin>",
-      lineNumber: 138,
+      lineNumber: 156,
       columnNumber: 9
     }
   );
 };
 root.render(/* @__PURE__ */ jsxDEV(RenderApp, {}, void 0, false, {
   fileName: "<stdin>",
-  lineNumber: 154,
+  lineNumber: 172,
   columnNumber: 13
 }));
